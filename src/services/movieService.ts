@@ -9,22 +9,35 @@ export interface MovieQueryParams {
     page: number;
 }
 
-export const fetchMovies = async ({
-    query, page,
-}: { query: string; page: number }): Promise<MovieApiResponse> => {
+const apiClient = axios.create({
+  baseURL: 'https://api.themoviedb.org/3',
+  headers: {
+    Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_KEY}`,
+    accept: 'application/json',
+  },
 
-  const endpoint = query.trim()
+});
+
+export const fetchMovies = async ({
+  query, page,
+}: MovieQueryParams): Promise<MovieApiResponse> => {
+  const trimmedQuery = query.trim();
+
+  const endpoint = trimmedQuery
     ? 'https://api.themoviedb.org/3/search/movie'
     : 'https://api.themoviedb.org/3/movie/popular';
 
-  const response = await axios.get<MovieApiResponse>(endpoint, {
+
+
+   const response = await apiClient.get<MovieApiResponse>(endpoint, {
     params: {
-      api_key: 'YOUR_API_KEY',
-      query,
+      ...(trimmedQuery && { query: trimmedQuery }),
       page,
     },
   });
 
+console.log('API KEY from env:', import.meta.env.VITE_TMDB_API_KEY);
   return response.data;
 };
+
 

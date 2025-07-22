@@ -13,8 +13,8 @@ import type { MovieApiResponse } from "../../types/movie";
 
 import type { Movie } from "../../types/movie";
 import { fetchMovies } from "../../services/movieService";
-import { useQuery } from "@tanstack/react-query";
 
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 export default function App() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -23,7 +23,7 @@ export default function App() {
   const { data, isLoading, isError } = useQuery<MovieApiResponse>({
   queryKey: ["movies", { query: searchQuery, page }],
   queryFn: () => fetchMovies({ query: searchQuery, page }),
-  keepPreviousData: true,
+  placeholderData: keepPreviousData,
 });
 
   const movies = data?.results ?? [];
