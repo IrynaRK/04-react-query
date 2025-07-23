@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { Movie } from "../types/movie";
 
+
 export interface MovieApiResponse {
     page: number;
     results: Movie[];

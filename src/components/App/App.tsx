@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useEffect } from "react";
+
 import toast, { Toaster } from "react-hot-toast";
 import ReactPaginate from "react-paginate";
 import styles from './App.module.css';
@@ -20,11 +22,19 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(1);
 
-  const { data, isLoading, isError } = useQuery<MovieApiResponse>({
+  const { data, isLoading, isError, isSuccess } = useQuery<MovieApiResponse>({
   queryKey: ["movies", { query: searchQuery, page }],
   queryFn: () => fetchMovies({ query: searchQuery, page }),
+  enabled: !!searchQuery.trim(),
   placeholderData: keepPreviousData,
 });
+
+useEffect(() => {
+  if (isSuccess && data && data.results.length === 0) {
+    toast.error("No movies found for your search.");
+  }
+}, [isSuccess, data]);
+
 
   const movies = data?.results ?? [];
   const totalPages = data?.total_pages ?? 0;
