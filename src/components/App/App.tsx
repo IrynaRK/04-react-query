@@ -9,7 +9,7 @@ import MovieModal from "../MovieModal/MovieModal";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
-import type { MovieApiResponse } from "../../types/movie";
+import type { MovieApiResponse } from "../../services/movieService";
 
 import type { Movie } from "../../types/movie";
 import { fetchMovies } from "../../services/movieService";

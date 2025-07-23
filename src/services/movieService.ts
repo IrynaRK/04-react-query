@@ -1,5 +1,12 @@
 import axios from 'axios';
-import type { MovieApiResponse } from "../types/movie";
+import type { Movie } from "../types/movie";
+
+export interface MovieApiResponse {
+    page: number;
+    results: Movie[];
+    total_pages: number;
+    total_results: number;
+}
 
 export interface MovieQueryParams {
     query: string;
@@ -13,6 +20,7 @@ const apiClient = axios.create({
     accept: 'application/json',
   },
 });
+
 
 export const fetchMovies = async ({
   query, page,

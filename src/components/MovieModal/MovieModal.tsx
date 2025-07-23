@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useState } from "react";
 import { createPortal } from "react-dom";
 import styles from './MovieModal.module.css';
 import type { Movie } from "../../types/movie";
@@ -10,15 +9,7 @@ interface MovieModalProps {
 }
 
 export default function MovieModal({ movie, onClose }: MovieModalProps) {
-       const [modalRoot, setModalRoot] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setModalRoot(document.getElementById('modal-root'));
-  }, []);
-
-
-
-    useEffect(() => {
+       useEffect(() => {
         document.body.style.overflow = 'hidden';
 
         const handleEscape = (e: KeyboardEvent) => {
@@ -36,8 +27,6 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (e.target === e.currentTarget) onClose();
     };
-
-     if (!modalRoot) return null;
 
     return createPortal(
         <div className={styles.backdrop} role="dialog" aria-modal="true" onClick={handleBackdropClick}>
@@ -57,6 +46,6 @@ export default function MovieModal({ movie, onClose }: MovieModalProps) {
                  </div>
             </div>
         </div>,
-        modalRoot
+       document.body
     );
 }
